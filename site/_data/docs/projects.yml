@@ -1,0 +1,14 @@
+tools:
+  - url: devtools
+  - url: workbox
+crx:
+  - url: extensions
+  - url: webstore
+  - url: apps
+architecture:
+  - url: privacy-sandbox
+  - url: native-client
+  - url: multidevice
+  - url: android
+infrastructure:
+  - url: versionhistory
