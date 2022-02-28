@@ -1,0 +1,36 @@
+
+{#
+  Renders a table of types based on a given channel filter.
+#}
+{% macro renderReferenceTable(all, channel, source) %}
+
+<table class="reference fixed-table width-full">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th class="reference-collapse">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+
+  {% for page in all %}
+    {% if page.data.namespace %}
+      {% set namespace = page.data.namespace %}
+      {% if (not channel or channel === namespace.version.channel) and (not source or source === namespace.source) %}
+        <tr>
+          <td>
+            <a class="link weight-medium" href="{{ namespace.shortName | namespaceToPath }}">{{ namespace.shortName }}</a><br />
+            {% if not channel and namespace.version.low %}
+              Chrome {{ namespace.version.low }}
+            {% endif %}
+          </td>
+          <td class="reference-collapse type">{{ namespace.comment | safe }}</td>
+        </tr>
+      {% endif %}
+    {% endif %}
+  {% endfor %}
+
+  </tbody>
+</table>
+
+{% endmacro %}
