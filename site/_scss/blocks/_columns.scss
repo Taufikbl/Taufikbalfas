@@ -1,0 +1,25 @@
+.columns {
+  display: grid;
+  gap: get-size(300);
+  grid-auto-flow: row;
+
+  @include media-query('md') {
+    grid-auto-columns: 1fr;
+    grid-auto-flow: column;
+  }
+}
+
+// TODO(robdodson): Should we update the existing columns shortcode to use
+// this class instead? It'll need to be configured so it still uses a 1fr 1fr
+// behavior but that seems doable.
+:root {
+  --grid-col-breakpoint: 15rem;
+  --grid-col-gap: 1rem;
+}
+
+
+.grid-columns {
+  display: grid;
+  gap: var(--grid-col-gap);
+  grid-template-columns: repeat(auto-fit, minmax(var(--grid-col-breakpoint), 1fr));
+}
