@@ -1,0 +1,57 @@
+
+{#
+  Renders a table of types based on a given channel filter.
+#}
+{% macro renderReferenceTable(all, channel, platformAppsOnly = undefined) %}
+
+<table class="reference fixed-table width-full">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th class="reference-collapse">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+
+  {% for page in all %}
+    {% if page.data.namespace %}
+      {% set namespace = page.data.namespace %}
+      {% set feature = namespace.feature %}
+
+      {% if (not channel or channel === feature.supportedInChannel) and (platformAppsOnly === feature.platformAppsOnly) %}
+        <tr>
+          <td>
+            <a class="link weight-medium" href="{{ namespace.name | namespaceToPath }}">{{ namespace.name }}</a>
+            <div class="reference-requirements">
+              {% if not channel and feature.supportedInChannel === 'dev' %}
+                <span>Dev channel</span>
+              {% elif not channel and feature.supportedInChannel === 'beta' %}
+                <span>Beta and Dev channels</span>
+              {% elif feature.availableFromVersion %}
+                <span>Chrome {{ feature.availableFromVersion }}</span>
+              {% endif %}
+              {% if feature.maxManifestVersion %}
+                <span>
+                  MV{{ feature.maxManifestVersion }}
+                  {% if feature.maxManifestVersion === 2 %}
+                    {# Nothing is actually before MV2. #}
+                  {% else %}
+                    and below
+                  {% endif %}
+                </span>
+              {% endif %}
+              {% if feature.minManifestVersion %}
+                <span>MV{{ feature.minManifestVersion }}+</span>
+              {% endif %}
+            </div>
+          </td>
+          <td class="reference-collapse type">{{ namespace.description | md | safe }}</td>
+        </tr>
+      {% endif %}
+    {% endif %}
+  {% endfor %}
+
+  </tbody>
+</table>
+
+{% endmacro %}
